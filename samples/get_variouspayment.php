@@ -94,6 +94,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
                 $SN_CCIU = ($arrr->value);
             };
         };
+
         $SN_RUC = ($vendor->vatRegNumber);//RUC proveedor
         $SN_RS = str_pad(($vendor->companyName),60," ",STR_PAD_RIGHT);//Razon social proveedor
         $mail = str_pad($SN_mail,50," ",STR_PAD_RIGHT);
@@ -154,7 +155,8 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         }else {
             $Signo = '-';//Signo el sistema
         };
-    
+        //$mail;
+
         echo json_encode($Tipo_orden);
         echo json_encode($ref1y2);
         echo json_encode($moneda);
@@ -173,7 +175,12 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         echo json_encode($Subtp_pago);
         echo json_encode($Signo);
         echo json_encode($mail);
-        echo json_decode("\n");    
+        echo json_decode("\n");
+        //$i=1;
+        //echo json_encode($i);
+        //echo json_encode('/n');
+    
     };    
 };
+
 ?>
