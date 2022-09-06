@@ -9,11 +9,13 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 $service = new NetSuiteService();
 $request = new GetRequest();
 $request->baseRef = new RecordRef();
-$request->baseRef->internalId = "1508123"; // 1509342 //1509042 //1509242 //1508123
-$request->baseRef->type = "vendorPayment";
+$request->baseRef->internalId = "1508937"; // 1508937 //1509342 //1509042 //1509242 //1508123
+$request->baseRef->type = "vendorPrepayment";
 $getVendorPayment = $service->get($request);
-$paymentvendor=$getVendorPayment->readResponse->record;
+//$paymentvendor=$getVendorPayment->readResponse->record;
+echo json_encode($getVendorPayment);
 
+/*
 //campos de Vendor en payment
 $vendor_id = ($paymentvendor->entity->internalId);//ID proveedor
 $vendor_name = ($paymentvendor->entity->name);//codigo proveedor
@@ -182,5 +184,5 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
     
     };    
 };
-
+*/
 ?>

@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 $service = new NetSuiteService();
 $request = new GetRequest();
 $request->baseRef = new RecordRef();
-$request->baseRef->internalId = "1508123"; // 1509342 //1509042 //1509242 //1508123
+$request->baseRef->internalId = "1509242"; // 1509342 //1509042 //1509242 //1508123
 $request->baseRef->type = "vendorPayment";
 $getVendorPayment = $service->get($request);
 $paymentvendor=$getVendorPayment->readResponse->record;
@@ -90,7 +90,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
             if ($iddd == 'custentitywow_cci_sol'){
                 $SN_CCIS = ($arrr->value);
             };
-            if ($iddd == 'custentitywow_cci_sol'){
+            if ($iddd == 'custentitywow_cci_usd'){
                 $SN_CCIU = ($arrr->value);
             };
         };
