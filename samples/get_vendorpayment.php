@@ -47,8 +47,6 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $request2->baseRef->type = "vendorBill";
         $getInvoice = $service->get($request2);
         $invoice= $getInvoice->readResponse->record;
-    };
-};
 
 $currency = ($paymentvendor->currencyName);//moneda del pago
 $account_id = ($paymentvendor->account->internalId);//ID cuenta de cargo
@@ -130,7 +128,6 @@ $dateinvoice = $invoice->tranDate;
 $duedateinvoice = $invoice->dueDate;
 
 
-//Construccion de esctructura txt
 if ($SN_tp = 6) {
     $Tipo_orden = '01';//Pago Proveedores es Código 01(Tabla 01)
 }else{
@@ -170,24 +167,6 @@ if ($type_apply = 'Factura de compra') {
     $Signo = '-';//Signo el sistema
 };
 $mail;
-
-
-
-/*echo json_encode($vendor_id);
-echo json_encode($vendor_name);
-
-echo json_encode($account_id);
-echo json_encode($account_name);
-echo json_encode($fecha_payment);
-echo json_encode($ref1);
-echo json_encode($memo);
-echo json_encode($invoice_id);
-echo json_encode($date_apply);
-echo json_encode($amount_apply);
-echo json_encode($SN_mail);*/
-
-
-//echo json_encode($lpaccount);
 
 
 echo json_encode($Tipo_orden);
@@ -235,40 +214,4 @@ $getResponse1 = $service->get($request1);
 //$ref1 = $vendorPayment->memo;
 //$person_type = $vendor->companyName;
 
-//echo json_encode($ref1);
-
-/*
-$data = array([
-    $tipo_ordpago,
-    $ref1,
-    $person_type
-]);
-
-$headers = array(
-    'TipodeOrden',
-    'Ref1',
-    'TipoPersona'
-);
-
-$spreadsheet = new Spreadsheet();
-$spreadsheet->setActiveSheetIndex(0);
-$sheet = $spreadsheet->getActiveSheet();
-
-for ($i = 0, $l = sizeof($headers); $i < $l; $i++) {
-    $sheet->setCellValueByColumnAndRow($i + 1, 1, $headers[$i]);
-}
-
-for ($i = 0, $l = sizeof($data); $i < $l; $i++) { // row $i
-    $j = 0;
-    foreach ($data[$i] as $k => $v) { // column $j
-        $sheet->setCellValueByColumnAndRow($j + 1, ($i + 1 + 1), $v);
-        $j++;
-    }
-}
-
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="data.csv"');
-header('Cache-Control: max-age=0');
-$writer = IOFactory::createWriter($spreadsheet, 'Csv');
-$writer->save('php://output');*/
 ?>
