@@ -9,10 +9,10 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 $service = new NetSuiteService();
 $request = new GetRequest();
 $request->baseRef = new RecordRef();
-$request->baseRef->internalId = "1508937"; // 1508937 //1509342 //1509042 //1509242 //1508123
-$request->baseRef->type = "vendorPrepayment";
+$request->baseRef->internalId = "1508837"; // 1508937 /859051
+$request->baseRef->type = "vendorPayment";
 $getVendorPayment = $service->get($request);
-//$paymentvendor=$getVendorPayment->readResponse->record;
+$paymentvendor=$getVendorPayment->readResponse->record;
 echo json_encode($getVendorPayment);
 
 /*

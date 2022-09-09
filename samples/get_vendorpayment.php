@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 $service = new NetSuiteService();
 $request = new GetRequest();
 $request->baseRef = new RecordRef();
-$request->baseRef->internalId = "1509242"; // 1509342 //1509042 //1509242 //1508123
+$request->baseRef->internalId = "1508123"; // 1509342 //1509042 //1509242 //1508123 ///1509449 / 1509450 / 1509553 
 $request->baseRef->type = "vendorPayment";
 $getVendorPayment = $service->get($request);
 $paymentvendor=$getVendorPayment->readResponse->record;
@@ -25,6 +25,14 @@ $request1->baseRef->internalId = $vendor_id;
 $request1->baseRef->type = "vendor";
 $getVendor = $service->get($request1);
 $vendor= $getVendor->readResponse->record;
+
+//Datos para el nombre del archivo
+date_default_timezone_set('America/Bogota');
+$año = substr(date('Y', time()),-2);
+$mes = date ('m',time());
+$day = date ('d',time());
+$horaymin = date ('hi',time());
+$nombrearchivo = $año.$mes.$day.$horaymin;
 
 //navegacion en los documentos pagados
 $lppayment = sizeof($paymentvendor->applyList->apply);
@@ -154,7 +162,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         }else {
             $Signo = '-';//Signo el sistema
         };
-    
+        /*
         echo json_encode($Tipo_orden);
         echo json_encode($ref1y2);
         echo json_encode($moneda);
@@ -172,8 +180,17 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         echo json_encode($digControl);
         echo json_encode($Subtp_pago);
         echo json_encode($Signo);
-        echo json_encode($mail);
-        echo json_decode("\n");    
+        echo json_encode($mail);*/
+        $concatenado=$Tipo_orden.$ref1y2.$moneda.$CCI.$paymentdate.$SN_RUC.$SN_RS.$formapago.$CCIVendor.$invoicedate.$invoiceduedate.$nroInvoice.$importe_neto.$moduloRaiz.$digControl.$Subtp_pago.$Signo.$mail;
+        //echo json_encode($nombrearchivo);
+        $fi = fopen("F".$nombrearchivo.".txt","a")
+        or die("problemas al crear archivo");
+
+        fputs($fi,$concatenado);
+        fputs($fi,"\n");
+
+        //echo json_decode("\n");    
     };    
 };
+fclose($fi);
 ?>

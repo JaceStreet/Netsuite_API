@@ -753,6 +753,10 @@ class RecordType {
 	/**
 	 * @var string
 	 */
+	const vendorPrepayment = "vendorPrepayment";
+	/**
+	 * @var string
+	 */
 	const vendorReturnAuthorization = "vendorReturnAuthorization";
 	/**
 	 * @var string
@@ -1402,6 +1406,10 @@ class InitializeType {
 	 * @var string
 	 */
 	const vendorPayment = "vendorPayment";
+	/**
+	 * @var string
+	 */
+	const vendorPrepayment = "vendorPrepayment";
 	/**
 	 * @var string
 	 */
@@ -2064,6 +2072,10 @@ class DeletedRecordType {
 	 * @var string
 	 */
 	const vendorPayment = "vendorPayment";
+	/**
+	 * @var string
+	 */
+	const vendorPrepayment = "vendorPrepayment";
 	/**
 	 * @var string
 	 */
@@ -15858,6 +15870,10 @@ class PermissionCode {
 	 * @var string
 	 */
 	const _approveVendorPayments = "_approveVendorPayments";
+	/**
+	 * @var string
+	 */
+	const _approveVendorPrepayments = "_approveVendorPrepayments";
 	/**
 	 * @var string
 	 */
@@ -107267,6 +107283,10 @@ class TransactionType {
 	/**
 	 * @var string
 	 */
+	const _vendorPrepayment = "_vendorPrepayment";
+	/**
+	 * @var string
+	 */
 	const _vendorReturnAuthorization = "_vendorReturnAuthorization";
 	/**
 	 * @var string
@@ -121760,6 +121780,244 @@ class VendorPayment extends Record {
 		"transactionNumber" => "string",
 		"applyList" => "VendorPaymentApplyList",
 		"creditList" => "VendorPaymentCreditList",
+		"billPay" => "boolean",
+		"accountingBookDetailList" => "AccountingBookDetailList",
+		"availableBalance" => "float",
+		"isInTransitPayment" => "boolean",
+		"approvalStatus" => "RecordRef",
+		"nextApprover" => "RecordRef",
+		"payeeAddressList" => "RecordRef",
+		"payeeAddress" => "Address",
+		"customFieldList" => "CustomFieldList",
+		"internalId" => "string",
+		"externalId" => "string",
+	);
+}}
+
+if (!class_exists("VendorPrepayment")) {
+	/**
+	 * VendorPrepayment
+	 */
+	class VendorPrepayment extends Record {
+	/**
+	 * @access public
+	 * @var dateTime
+	 */
+	public $createdDate;
+	/**
+	 * @access public
+	 * @var dateTime
+	 */
+	public $lastModifiedDate;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $customForm;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $account;
+	/**
+	 * @access public
+	 * @var float
+	 */
+	public $balance;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $apAcct;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $entity;
+	/**
+	 * @access public
+	 * @var dateTime
+	 */
+	public $tranDate;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $voidJournal;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $postingPeriod;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $currencyName;
+	/**
+	 * @access public
+	 * @var float
+	 */
+	public $exchangeRate;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
+	public $toAch;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
+	public $toBePrinted;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
+	public $printVoucher;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $tranId;
+	/**
+	 * @access public
+	 * @var float
+	 */
+	public $total;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $currency;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $department;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $memo;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $subsidiary;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $class;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $location;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $status;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $transactionNumber;
+	/**
+	 * @access public
+	 * @var VendorPrepaymentApplyList
+	 */
+	public $applyList;
+	/**
+	 * @access public
+	 * @var VendorPrepaymentCreditList
+	 */
+	public $creditList;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
+	public $billPay;
+	/**
+	 * @access public
+	 * @var AccountingBookDetailList
+	 */
+	public $accountingBookDetailList;
+	/**
+	 * @access public
+	 * @var float
+	 */
+	public $availableBalance;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
+	public $isInTransitPayment;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $approvalStatus;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $nextApprover;
+	/**
+	 * @access public
+	 * @var RecordRef
+	 */
+	public $payeeAddressList;
+	/**
+	 * @access public
+	 * @var Address
+	 */
+	public $payeeAddress;
+	/**
+	 * @access public
+	 * @var CustomFieldList
+	 */
+	public $customFieldList;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $internalId;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $externalId;
+	
+	static $paramtypesmap = array(
+		"createdDate" => "dateTime",
+		"lastModifiedDate" => "dateTime",
+		"customForm" => "RecordRef",
+		"account" => "RecordRef",
+		"balance" => "float",
+		"apAcct" => "RecordRef",
+		"entity" => "RecordRef",
+		"tranDate" => "dateTime",
+		"voidJournal" => "RecordRef",
+		"postingPeriod" => "RecordRef",
+		"currencyName" => "string",
+		"exchangeRate" => "float",
+		"toAch" => "boolean",
+		"toBePrinted" => "boolean",
+		"printVoucher" => "boolean",
+		"tranId" => "string",
+		"total" => "float",
+		"currency" => "RecordRef",
+		"department" => "RecordRef",
+		"memo" => "string",
+		"subsidiary" => "RecordRef",
+		"class" => "RecordRef",
+		"location" => "RecordRef",
+		"status" => "string",
+		"transactionNumber" => "string",
+		"applyList" => "VendorPrepaymentApplyList",
+		"creditList" => "VendorPrepaymentCreditList",
 		"billPay" => "boolean",
 		"accountingBookDetailList" => "AccountingBookDetailList",
 		"availableBalance" => "float",
@@ -140584,6 +140842,11 @@ class TransactionBodyCustomField extends CustomFieldType {
 	 * @access public
 	 * @var boolean
 	 */
+	public $bodyVendorPrepayment;
+	/**
+	 * @access public
+	 * @var boolean
+	 */
 	public $bodyDeposit;
 	/**
 	 * @access public
@@ -140690,6 +140953,7 @@ class TransactionBodyCustomField extends CustomFieldType {
 		"bodyPrintPackingSlip" => "boolean",
 		"bodyCustomerPayment" => "boolean",
 		"bodyVendorPayment" => "boolean",
+		"bodyVendorPrepayment" => "boolean",
 		"bodyDeposit" => "boolean",
 		"bodyBom" => "boolean",
 		"bodyPrintStatement" => "boolean",
@@ -157141,6 +157405,7 @@ class NetSuiteService extends NSPHPClient {
 		"ItemReceiptExpense" => "ItemReceiptExpense",
 		"ItemReceiptExpenseList" => "ItemReceiptExpenseList",
 		"VendorPayment" => "VendorPayment",
+		"VendorPrepayment"=>"VendorPrepayment",
 		"VendorPaymentApply" => "VendorPaymentApply",
 		"VendorPaymentApplyList" => "VendorPaymentApplyList",
 		"VendorPaymentCredit" => "VendorPaymentCredit",
