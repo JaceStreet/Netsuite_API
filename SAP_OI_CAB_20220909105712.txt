@@ -1,0 +1,2 @@
+DocNum	NumPedido	CodigoClienteSolum	OrigenOrdenRecibo	CodProveedorCliente	NombreProveedorCliente      	FechaOrdenRecibo	Fechaentrega	PaisOrigen	TipoCarga	PorcentajeMuestreo	
+1     	PO1982   	P20605977406      	N                	20608901567        	CORPORACION TELEPARTES S.A.C	20220811        	20220510    	          	         	                  	

@@ -13,9 +13,9 @@ $request->baseRef->internalId = "1508837"; // 1508937 /859051
 $request->baseRef->type = "vendorPayment";
 $getVendorPayment = $service->get($request);
 $paymentvendor=$getVendorPayment->readResponse->record;
-echo json_encode($getVendorPayment);
 
-/*
+//echo json_encode ($paymentvendor);
+
 //campos de Vendor en payment
 $vendor_id = ($paymentvendor->entity->internalId);//ID proveedor
 $vendor_name = ($paymentvendor->entity->name);//codigo proveedor
@@ -24,14 +24,18 @@ $vendor_name = ($paymentvendor->entity->name);//codigo proveedor
 $request1 = new GetRequest();   
 $request1->baseRef = new RecordRef();
 $request1->baseRef->internalId = $vendor_id;
-$request1->baseRef->type = "vendor";
+$request1->baseRef->type = "employee";
 $getVendor = $service->get($request1);
 $vendor= $getVendor->readResponse->record;
+
+//echo json_encode($vendor);
+//echo json_encode($getVendor);
+//echo json_encode($paymentvendor);
 
 //navegacion en los documentos pagados
 $lppayment = sizeof($paymentvendor->applyList->apply);
 $test = $paymentvendor->applyList->apply;
-//echo json_encode($test);
+//echo json_encode($lppayment);
 //echo json_encode($test);
 for ($i = 0, $l = $lppayment; $i<$l ; $i++){
     $ar = ($test)[$i];
@@ -46,12 +50,12 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $importe_neto = str_pad($amount,11,"0",STR_PAD_LEFT);
 
         //GET Info Invoice
-        $request2 = new GetRequest();   
+        /*$request2 = new GetRequest();   
         $request2->baseRef = new RecordRef();
         $request2->baseRef->internalId = $invoice_id;
-        $request2->baseRef->type = "vendorBill";
+        $request2->baseRef->type = "journal";
         $getInvoice = $service->get($request2);
-        $invoice= $getInvoice->readResponse->record;
+        $invoice= $getInvoice->readResponse->record;*/
         //echo json_encode($invoice->customFieldList->customField);
 
         //GET Info Payment
@@ -96,7 +100,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
                 $SN_CCIU = ($arrr->value);
             };
         };
-
+        
         $SN_RUC = ($vendor->vatRegNumber);//RUC proveedor
         $SN_RS = str_pad(($vendor->companyName),60," ",STR_PAD_RIGHT);//Razon social proveedor
         $mail = str_pad($SN_mail,50," ",STR_PAD_RIGHT);
@@ -120,7 +124,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
 
         //Construccion txt
         if ($SN_tp == 6) {
-            $Tipo_orden = '01';//Pago Proveedores es Código 01(Tabla 01)
+            $Tipo_orden = '13';//Pagos Varios es Código 13(Tabla 01)
         }else{
             $Tipo_orden = 'XX';
         };
@@ -168,15 +172,15 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         echo json_encode($SN_RS);
         echo json_encode($formapago);
         echo json_encode($CCIVendor);
-        echo json_encode($invoicedate);
-        echo json_encode($invoiceduedate);
-        echo json_encode($nroInvoice);
+        //echo json_encode($invoicedate);
+        //echo json_encode($invoiceduedate);
+        //echo json_encode($nroInvoice);
         echo json_encode($importe_neto);
         echo json_encode($moduloRaiz);
         echo json_encode($digControl);
-        echo json_encode($Subtp_pago);
+        //echo json_encode($Subtp_pago);
         echo json_encode($Signo);
-        echo json_encode($mail);
+        //echo json_encode($mail);
         echo json_decode("\n");
         //$i=1;
         //echo json_encode($i);
@@ -184,5 +188,5 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
     
     };    
 };
-*/
+
 ?>

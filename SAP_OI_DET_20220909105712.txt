@@ -1,0 +1,6 @@
+DocNum	NumPedido	CorrelativoLinea	CodigoArticulo	Cantidad	MonedaPrecio	TratamientoEspecial	CodigoAlmacen	UomEntry	
+1     	PO1982   	0               	wo1034        	10      	USD         	N                  	L01          	-1      	
+1     	PO1982   	1               	wo827         	10      	USD         	N                  	L01          	-1      	
+1     	PO1982   	2               	wo1060        	13      	USD         	N                  	L01          	-1      	
+1     	PO1982   	3               	wo828         	23      	USD         	N                  	L01          	-1      	
+1     	PO1982   	4               	wo1059        	26      	USD         	N                  	L01          	-1      	
