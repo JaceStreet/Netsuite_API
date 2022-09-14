@@ -49,14 +49,16 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $amount = number_format((float)round($amount_apply, PHP_ROUND_HALF_DOWN),2,'','');
         $importe_neto = str_pad($amount,11,"0",STR_PAD_LEFT);
 
+        //echo json_encode($invoice_id);
+        
         //GET Info Invoice
-        /*$request2 = new GetRequest();   
+        $request2 = new GetRequest();   
         $request2->baseRef = new RecordRef();
         $request2->baseRef->internalId = $invoice_id;
-        $request2->baseRef->type = "journal";
+        $request2->baseRef->type = "journalEntry";
         $getInvoice = $service->get($request2);
-        $invoice= $getInvoice->readResponse->record;*/
-        //echo json_encode($invoice->customFieldList->customField);
+        $invoice= $getInvoice->readResponse->record;
+        //echo json_encode($getInvoice);
 
         //GET Info Payment
         $currency = ($paymentvendor->currencyName);//moneda del pago
@@ -83,6 +85,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
                 $CCI = ($arr->value);
             };
         };
+        //echo json_encode($vendor);
 
         //Campos de Proveedor (Socio de Negocio)
         $SN_mail = ($vendor->email);//email proveedor
@@ -96,15 +99,18 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
             if ($iddd == 'custentitywow_cci_sol'){
                 $SN_CCIS = ($arrr->value);
             };
-            if ($iddd == 'custentitywow_cci_sol'){
+            if ($iddd == 'custentitywow_cci_usd'){
                 $SN_CCIU = ($arrr->value);
+            };
+            if ($iddd == 'custentity_lmry_sv_taxpayer_number'){
+                $SN_RUC=($arrr->value);
             };
         };
         
-        $SN_RUC = ($vendor->vatRegNumber);//RUC proveedor
-        $SN_RS = str_pad(($vendor->companyName),60," ",STR_PAD_RIGHT);//Razon social proveedor
-        $mail = str_pad($SN_mail,50," ",STR_PAD_RIGHT);
-
+//        $SN_RUC = ($vendor->entityId);//RUC proveedor
+        $SN_RS = str_pad(($vendor->entityId),60," ",STR_PAD_RIGHT);//Razon social proveedor
+//        $mail = str_pad($SN_mail,50," ",STR_PAD_RIGHT);
+/*
         
         //Campos de Invoice
         $lpinvoice = sizeof($invoice->customFieldList->customField);
@@ -121,9 +127,9 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         };
         $dateinvoice = $invoice->tranDate;
         $duedateinvoice = $invoice->dueDate;
-
+*/
         //Construccion txt
-        if ($SN_tp == 6) {
+        if ($SN_tp == 1) {
             $Tipo_orden = '13';//Pagos Varios es Código 13(Tabla 01)
         }else{
             $Tipo_orden = 'XX';
@@ -146,9 +152,9 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         }elseif($currency == 'Sol'){
             $CCIVendor = $SN_CCIS;
         };
-        $invoicedate = date("Ymd", strtotime($dateinvoice));
-        $invoiceduedate = date("Ymd", strtotime($duedateinvoice));
-        $nroInvoice = $Serie_invoice."-".$Correlativo_invoice;
+        //$invoicedate = date("Ymd", strtotime($dateinvoice));
+        //$invoiceduedate = date("Ymd", strtotime($duedateinvoice));
+        //$nroInvoice = $Serie_invoice."-".$Correlativo_invoice;
         $moduloRaiz = rand(50, 99);
         $digControl = "XX";
         if ($SN_tp == 6) {
@@ -156,12 +162,8 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         }else {
             $Subtp_pago = '@';//Sub tipo de pago (Tabla 04)
         };
-        if ($type_apply == 'Factura de compra') {
-            $Signo = '+';//Signo el sistema
-        }else {
-            $Signo = '-';//Signo el sistema
-        };
-        //$mail;
+        $Signo = '+';//Signo el sistema
+        
 
         echo json_encode($Tipo_orden);
         echo json_encode($ref1y2);
@@ -170,7 +172,7 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         echo json_encode($paymentdate);
         echo json_encode($SN_RUC);
         echo json_encode($SN_RS);
-        echo json_encode($formapago);
+        //echo json_encode($formapago);
         echo json_encode($CCIVendor);
         //echo json_encode($invoicedate);
         //echo json_encode($invoiceduedate);
