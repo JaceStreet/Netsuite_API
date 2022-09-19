@@ -9,12 +9,10 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 $service = new NetSuiteService();
 $request = new GetRequest();
 $request->baseRef = new RecordRef();
-$request->baseRef->internalId = "1508837"; // 1508937 /859051
+$request->baseRef->internalId = "1510883"; // 1508937 /859051
 $request->baseRef->type = "vendorPayment";
 $getVendorPayment = $service->get($request);
 $paymentvendor=$getVendorPayment->readResponse->record;
-
-//echo json_encode ($paymentvendor);
 
 //campos de Vendor en payment
 $vendor_id = ($paymentvendor->entity->internalId);//ID proveedor
@@ -28,15 +26,18 @@ $request1->baseRef->type = "employee";
 $getVendor = $service->get($request1);
 $vendor= $getVendor->readResponse->record;
 
-//echo json_encode($vendor);
-//echo json_encode($getVendor);
-//echo json_encode($paymentvendor);
-
 //navegacion en los documentos pagados
 $lppayment = sizeof($paymentvendor->applyList->apply);
 $test = $paymentvendor->applyList->apply;
-//echo json_encode($lppayment);
-//echo json_encode($test);
+
+//Datos para el nombre del archivo
+date_default_timezone_set('America/Bogota');
+$año = substr(date('Y', time()),-2);
+$mes = date ('m',time());
+$day = date ('d',time());
+$horaymin = date ('Hi',time());
+$nombrearchivo = $año.$mes.$day.$horaymin;
+
 for ($i = 0, $l = $lppayment; $i<$l ; $i++){
     $ar = ($test)[$i];
     $id = $ar->apply;
@@ -49,8 +50,6 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $amount = number_format((float)round($amount_apply, PHP_ROUND_HALF_DOWN),2,'','');
         $importe_neto = str_pad($amount,11,"0",STR_PAD_LEFT);
 
-        //echo json_encode($invoice_id);
-        
         //GET Info Invoice
         $request2 = new GetRequest();   
         $request2->baseRef = new RecordRef();
@@ -58,14 +57,15 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $request2->baseRef->type = "journalEntry";
         $getInvoice = $service->get($request2);
         $invoice= $getInvoice->readResponse->record;
-        //echo json_encode($getInvoice);
+        $reftext = ($ar->type).($ar->refNum);
+        $refpayment = str_pad(($reftext),20," ",STR_PAD_RIGHT); //referencia de pago
 
         //GET Info Payment
         $currency = ($paymentvendor->currencyName);//moneda del pago
         $account_id = ($paymentvendor->account->internalId);//ID cuenta de cargo
         $account_name = ($paymentvendor->account->name);//nombre de la cuenta de cargo
         $fecha_payment = ($paymentvendor->tranDate);//fecha de pago
-        $memo = str_pad(($paymentvendor->memo),31," ",STR_PAD_LEFT);//memo de pago (Ref02)
+        $memo = str_pad(($paymentvendor->memo),31," ",STR_PAD_RIGHT);//memo de pago (Ref1&2)
 
         //GET Info CuentaCargo 
         $request3 = new GetRequest();   
@@ -74,7 +74,6 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $request3->baseRef->type = "account";
         $getAccount = $service->get($request3);
         $account= $getAccount->readResponse->record->customFieldList;
-        //echo json_encode($i)."\n";
 
         //GET CCI Cuenta de Cargo
         $lpaccount = sizeof($account->customField);
@@ -85,10 +84,8 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
                 $CCI = ($arr->value);
             };
         };
-        //echo json_encode($vendor);
 
         //Campos de Proveedor (Socio de Negocio)
-        $SN_mail = ($vendor->email);//email proveedor
         $lpvendor = sizeof($vendor->customFieldList->customField);//largo de arreglo de campos personalizados
         for ($iii = 0, $lll = $lpvendor; $iii < $lll ; $iii++){
             $arrr = ($vendor->customFieldList->customField)[$iii];
@@ -103,31 +100,12 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
                 $SN_CCIU = ($arrr->value);
             };
             if ($iddd == 'custentity_lmry_sv_taxpayer_number'){
-                $SN_RUC=($arrr->value);
+                $SN_RUC=str_pad(($arrr->value),11," ",STR_PAD_RIGHT);
             };
         };
         
-//        $SN_RUC = ($vendor->entityId);//RUC proveedor
-        $SN_RS = str_pad(($vendor->entityId),60," ",STR_PAD_RIGHT);//Razon social proveedor
-//        $mail = str_pad($SN_mail,50," ",STR_PAD_RIGHT);
-/*
-        
-        //Campos de Invoice
-        $lpinvoice = sizeof($invoice->customFieldList->customField);
-        for ($iiii = 0, $llll = $lpinvoice; $iiii < $llll ; $iiii++){
-            $arrrr = ($invoice->customFieldList->customField)[$iiii];
-            $idddd = $arrrr->scriptId;
-            if ($idddd == 'custbody_lmry_serie_doc_cxp'){
-                $Serie_invoice = ($arrrr->value);
-            };
+        $SN_RS = str_pad(($vendor->entityId),60," ",STR_PAD_RIGHT);//Nombre del empleado
 
-            if ($idddd == 'custbody_lmry_num_preimpreso'){
-                $Correlativo_invoice = str_pad($arrrr->value,15,"0",STR_PAD_LEFT);
-            };
-        };
-        $dateinvoice = $invoice->tranDate;
-        $duedateinvoice = $invoice->dueDate;
-*/
         //Construccion txt
         if ($SN_tp == 1) {
             $Tipo_orden = '13';//Pagos Varios es Código 13(Tabla 01)
@@ -144,51 +122,41 @@ for ($i = 0, $l = $lppayment; $i<$l ; $i++){
         $paymentdate = date("Ymd", strtotime($fecha_payment));
         $SN_RUC;
         $SN_RS;
-        if ($SN_tp == 6) {
-            $formapago = '4';//Abono en cuenta CCI (Tabla 02)
-        };
+        $formapago = '4';//Abono en cuenta CCI (Tabla 02)
         if ($currency == 'US Dollar'){
             $CCIVendor = $SN_CCIU;
         }elseif($currency == 'Sol'){
             $CCIVendor = $SN_CCIS;
         };
-        //$invoicedate = date("Ymd", strtotime($dateinvoice));
-        //$invoiceduedate = date("Ymd", strtotime($duedateinvoice));
-        //$nroInvoice = $Serie_invoice."-".$Correlativo_invoice;
         $moduloRaiz = rand(50, 99);
         $digControl = "XX";
-        if ($SN_tp == 6) {
-            $Subtp_pago = ' ';//Sub tipo de pago (Tabla 04)
-        }else {
-            $Subtp_pago = '@';//Sub tipo de pago (Tabla 04)
-        };
         $Signo = '+';//Signo el sistema
-        
+    
+        //TXT
+        $concatenado=$Tipo_orden.$ref1y2.$moneda.$CCI.$paymentdate.$SN_RUC.$SN_RS.$formapago.$CCIVendor.$importe_neto.$moduloRaiz.$digControl.$Signo.$refpayment;
+        $fi = fopen("V".$nombrearchivo.".txt","a")
+        or die("problemas al crear archivo");
 
-        echo json_encode($Tipo_orden);
+        fputs($fi,$concatenado);
+        fputs($fi,"\n");
+
+        echo json_encode($concatenado);
+        
+        /*echo json_encode($Tipo_orden);
         echo json_encode($ref1y2);
         echo json_encode($moneda);
         echo json_encode($CCI);
         echo json_encode($paymentdate);
         echo json_encode($SN_RUC);
         echo json_encode($SN_RS);
-        //echo json_encode($formapago);
+        echo json_encode($formapago);
         echo json_encode($CCIVendor);
-        //echo json_encode($invoicedate);
-        //echo json_encode($invoiceduedate);
-        //echo json_encode($nroInvoice);
         echo json_encode($importe_neto);
         echo json_encode($moduloRaiz);
         echo json_encode($digControl);
-        //echo json_encode($Subtp_pago);
         echo json_encode($Signo);
-        //echo json_encode($mail);
-        echo json_decode("\n");
-        //$i=1;
-        //echo json_encode($i);
-        //echo json_encode('/n');
-    
+        echo json_encode($refpayment);
+        echo json_decode("\n");*/
     };    
 };
-
 ?>
